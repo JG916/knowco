@@ -36,4 +36,5 @@ ext {
     archLifecycleVersion = '2.2.0'
     coreKtxVersion = '1.2.0'
     fragmentKtxVersion = '1.2.3'
+    retrofitVersion = '2.7.2'
 }
