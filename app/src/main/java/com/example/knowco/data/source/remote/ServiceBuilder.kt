@@ -14,7 +14,7 @@ object ServiceBuilder {
 
     fun <T> createService(serviceClass: Class<T>): T {
         val gson = GsonBuilder()
-            .registerTypeAdapter(Coin::class.java, CoinRankDeserializer<Coin>())
+            .registerTypeAdapter(Coin::class.java, CoinDeserializer())
             .create()
 
         return Retrofit.Builder()
@@ -32,12 +32,12 @@ object ServiceBuilder {
             .build()
     }
 
-    private class CoinRankDeserializer<T> : JsonDeserializer<T> {
+    private class CoinDeserializer: JsonDeserializer<Coin> {
         override fun deserialize(
             json: JsonElement?,
             typeOfT: Type?,
             context: JsonDeserializationContext?
-        ): T {
+        ): Coin {
             val content: JsonObject? = json?.asJsonObject
                 ?.get("data")?.asJsonObject
                 ?.get(("coin"))?.asJsonObject
