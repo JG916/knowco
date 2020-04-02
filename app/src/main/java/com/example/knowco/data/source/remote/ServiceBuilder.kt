@@ -1,6 +1,7 @@
 package com.example.knowco.data.source.remote
 
 import com.example.knowco.data.model.Coin
+import com.example.knowco.data.model.CoinList
 import com.google.gson.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -15,6 +16,7 @@ object ServiceBuilder {
     fun <T> createService(serviceClass: Class<T>): T {
         val gson = GsonBuilder()
             .registerTypeAdapter(Coin::class.java, CoinDeserializer())
+            .registerTypeAdapter(CoinList::class.java, CoinListDeserializer())
             .create()
 
         return Retrofit.Builder()
@@ -41,6 +43,18 @@ object ServiceBuilder {
             val content: JsonObject? = json?.asJsonObject
                 ?.get("data")?.asJsonObject
                 ?.get(("coin"))?.asJsonObject
+            return Gson().fromJson(content, typeOfT)
+        }
+    }
+
+    private class CoinListDeserializer : JsonDeserializer<CoinList> {
+        override fun deserialize(
+            json: JsonElement?,
+            typeOfT: Type?,
+            context: JsonDeserializationContext?
+        ): CoinList {
+            val content: JsonObject? = json?.asJsonObject
+                ?.get("data")?.asJsonObject
             return Gson().fromJson(content, typeOfT)
         }
     }
